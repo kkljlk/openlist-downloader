@@ -12,8 +12,7 @@
 
 ## 下载
 
-- [v1.2.1 完整包（含 YunX）](https://github.com/kkljlk/openlist-downloader/releases/download/v1.2.1/OpenList-Downloader-v1.2.1-Windows-x64-with-YunX.zip)
-- [v1.2.1 热修复 exe](https://github.com/kkljlk/openlist-downloader/releases/download/v1.2.1/OpenList-Downloader-v1.2.1-hotfix.exe)
+- [v1.2.1 完整包（含 YunX）](https://github.com/kkljlk/openlist-downloader/releases/download/v1.2.1/OpenList-Downloader-v1.2.1-Windows-x64.zip)
 - [全部 Releases](https://github.com/kkljlk/openlist-downloader/releases)
 
 ## 能做什么
