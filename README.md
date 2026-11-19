@@ -10,6 +10,12 @@
 
 ![链接下载（不需要挂载网盘）](screenshots/10-direct.png)
 
+## 下载
+
+- [v1.2.1 完整包（含 YunX）](https://github.com/kkljlk/openlist-downloader/releases/download/v1.2.1/OpenList-Downloader-v1.2.1-Windows-x64-with-YunX.zip)
+- [v1.2.1 热修复 exe](https://github.com/kkljlk/openlist-downloader/releases/download/v1.2.1/OpenList-Downloader-v1.2.1-hotfix.exe)
+- [全部 Releases](https://github.com/kkljlk/openlist-downloader/releases)
+
 ## 能做什么
 - **不限速**：下载文件基本能跑满宽带
 - **独立桌面窗口**：不是浏览器标签页，没有地址栏；程序只在本机开服务
