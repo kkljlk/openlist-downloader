@@ -6,6 +6,9 @@ $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $Root
 
+# Keep this file ASCII-only: Windows PowerShell reads BOM-less UTF-8 as ANSI.
+$AppName = "OpenList" + [char]0x4E0B + [char]0x8F7D + [char]0x5668
+
 function Find-Python {
     $candidates = @()
     $cmd = Get-Command python -ErrorAction SilentlyContinue
@@ -25,14 +28,14 @@ function Find-Python {
             } catch { }
         }
     }
-    throw "没有找到可用的 Python 3.10+。"
+    throw "Python 3.10+ not found."
 }
 
 $Python = Find-Python
-Write-Host "使用 Python: $Python"
+Write-Host "Python: $Python"
 
 & $Python -m pip install --disable-pip-version-check -q pyinstaller
-if ($LASTEXITCODE -ne 0) { throw "安装 PyInstaller 失败" }
+if ($LASTEXITCODE -ne 0) { throw "Could not install PyInstaller" }
 
 $consoleFlag = if ($Console) { "--console" } else { "--noconsole" }
 $pyArgs = @(
@@ -41,7 +44,7 @@ $pyArgs = @(
     "--clean",
     "--onefile",
     $consoleFlag,
-    "--name", "OpenList下载器",
+    "--name", $AppName,
     "--icon", "assets\icon.ico",
     "--add-data", "static;static",
     "--add-data", "tools\aria2;tools\aria2",
@@ -56,24 +59,26 @@ $pyArgs = @(
 )
 
 & $Python @pyArgs
-if ($LASTEXITCODE -ne 0) { throw "PyInstaller 构建失败" }
+if ($LASTEXITCODE -ne 0) { throw "PyInstaller build failed" }
 
 $distDir = Join-Path $Root "dist"
 Copy-Item "README.md" $distDir -Force
 Copy-Item "LICENSE" $distDir -Force
-Copy-Item "使用说明.txt" $distDir -Force
 Copy-Item "THIRD-PARTY-NOTICES.txt" $distDir -Force
-Copy-Item "启动.bat" $distDir -Force
-Copy-Item "诊断.bat" $distDir -Force
-Copy-Item "启动-修复临时目录.bat" $distDir -Force
 Copy-Item "tools\aria2\COPYING" (Join-Path $distDir "ARIA2-COPYING.txt") -Force
 if (Test-Path "tools\aria2\LICENSE.OpenSSL") {
     Copy-Item "tools\aria2\LICENSE.OpenSSL" (Join-Path $distDir "ARIA2-LICENSE-OpenSSL.txt") -Force
 }
+
+# Copy UTF-8-named docs/launchers without embedding their names in this script.
+Get-ChildItem -File -Filter "*.txt" | Where-Object { $_.Name -notin @("requirements-build.txt") } | Copy-Item -Destination $distDir -Force
+Get-ChildItem -File -Filter "*.bat" | Copy-Item -Destination $distDir -Force
+
 New-Item -ItemType Directory -Force -Path (Join-Path $distDir "screenshots") | Out-Null
 if (Test-Path "screenshots") {
     Copy-Item "screenshots\*" (Join-Path $distDir "screenshots") -Force -Recurse
 }
+
 $yunxDist = Join-Path $distDir "YunX"
 if (Test-Path "YunX") {
     Remove-Item $yunxDist -Recurse -Force -ErrorAction SilentlyContinue
@@ -89,5 +94,5 @@ if (Test-Path "YunX") {
 }
 
 Write-Host ""
-Write-Host "构建完成：$distDir\OpenList下载器.exe"
-Get-Item "$distDir\OpenList下载器.exe" | Select-Object FullName, @{Name="SizeMB"; Expression={[math]::Round($_.Length/1MB,1)}}
+Write-Host "Built: $distDir\$AppName.exe"
+Get-Item "$distDir\$AppName.exe" | Select-Object FullName, @{Name="SizeMB"; Expression={[math]::Round($_.Length/1MB,1)}}
