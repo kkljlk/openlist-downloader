@@ -34,8 +34,8 @@ function Find-Python {
 $Python = Find-Python
 Write-Host "Python: $Python"
 
-& $Python -m pip install --disable-pip-version-check -q pyinstaller
-if ($LASTEXITCODE -ne 0) { throw "Could not install PyInstaller" }
+& $Python -m pip install --disable-pip-version-check -q pyinstaller pywebview
+if ($LASTEXITCODE -ne 0) { throw "Could not install PyInstaller/pywebview" }
 
 $consoleFlag = if ($Console) { "--console" } else { "--noconsole" }
 $pyArgs = @(
