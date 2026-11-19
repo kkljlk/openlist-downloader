@@ -1,0 +1,17 @@
+本发布包内含一个独立的第三方程序：
+
+云析桌面版 YunX-Desktop 1.3.4
+- 项目主页：https://github.com/tidain/YunX-Desktop
+- 发布页：https://github.com/tidain/YunX-Desktop/releases/tag/v1.3.4
+- 源码：https://github.com/tidain/YunX-Desktop
+- 许可证：GNU Affero General Public License v3.0（AGPL-3.0）
+- 许可证全文：YunX\LICENSE（发布包根目录同时提供 YUNX-LICENSE.txt）
+
+说明：
+1. 云析是独立运行的 Windows 便携程序，与本工具（OpenList 下载器）不是同一程序，也未修改其源代码。
+2. 本工具只负责把分享链接复制到剪贴板并启动云析；网盘登录、链接解析和下载均在云析内完成。
+3. 云析的账号凭证、Cookie 和下载数据由云析自行管理，本工具不读取。
+4. 云析的解析能力基于公开接口的抓包分析，可能随平台调整失效；百度网盘存在账号风控风险，速度受平台限制，不保证不限速。
+5. 如你需要云析对应的源代码，请从上述 GitHub 仓库获取；如对分发有疑问，请遵循 AGPL-3.0 的源码提供义务。
+
+本工具自身代码仍按 MIT License 发布，详见 LICENSE。

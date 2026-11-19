@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>OpenList 下载器</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-logo" viewBox="0 0 64 64">
+      <path d="M14 42h36a9 9 0 0 0 1.4-17.9A17.5 17.5 0 0 0 18.2 22 10.2 10.2 0 0 0 14 42Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M32 29v18m0 0-7-7m7 7 7-7" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-1.8 1.8-.06-.06A1.7 1.7 0 0 0 16.06 19a1.7 1.7 0 0 0-1.02 1.56V20.7h-2.55v-.14A1.7 1.7 0 0 0 11.47 19a1.7 1.7 0 0 0-1.88.34l-.06.06-1.8-1.8.06-.06A1.7 1.7 0 0 0 8.13 15a1.7 1.7 0 0 0-1.56-1.02H6.4v-2.55h.17A1.7 1.7 0 0 0 8.13 10.4a1.7 1.7 0 0 0-.34-1.88l-.06-.06 1.8-1.8.06.06A1.7 1.7 0 0 0 11.47 7a1.7 1.7 0 0 0 1.02-1.56V5.3h2.55v.14A1.7 1.7 0 0 0 16.06 7a1.7 1.7 0 0 0 1.88-.34l.06-.06 1.8 1.8-.06.06A1.7 1.7 0 0 0 19.4 10.4a1.7 1.7 0 0 0 1.56 1.02h.14v2.55h-.14A1.7 1.7 0 0 0 19.4 15Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9a2.5 2.5 0 1 1 3.9 2.1c-.9.6-1.5 1.1-1.5 2.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.1c.7 0 1.3.3 1.8.8l1.2 1.2h7A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z" fill="currentColor" opacity=".18"/><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.1c.7 0 1.3.3 1.8.8l1.2 1.2h7A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="M3 8V6.5A2.5 2.5 0 0 1 5.5 4h3.1c.7 0 1.3.3 1.8.8l1.2 1.2h6.9A2.5 2.5 0 0 1 21 8.5V9H6.2a3 3 0 0 0-2.9 2.2L3 12V8Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3.4 19.6 5.1 12a2 2 0 0 1 2-1.5h14.2a1.4 1.4 0 0 1 1.3 1.8l-1.7 7.3a2 2 0 0 1-2 1.5H4.7a1.4 1.4 0 0 1-1.3-1.5Z" fill="currentColor" opacity=".16"/><path d="M3.4 19.6 5.1 12a2 2 0 0 1 2-1.5h14.2a1.4 1.4 0 0 1 1.3 1.8l-1.7 7.3a2 2 0 0 1-2 1.5H4.7a1.4 1.4 0 0 1-1.3-1.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5m0 0-6 6m6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="m15.5 15.5 4 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="18" height="6" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="7" cy="7" r="1" fill="currentColor"/><circle cx="7" cy="17" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .6-7.9A6 6 0 0 0 6.1 9.4 4.5 4.5 0 0 0 7 18Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10-6.5-10-6.5Z" fill="currentColor"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5h3v14H8zm5 0h3v14h-3z" fill="currentColor"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2m-8 0 1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6m0-6-9 9M19 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" fill="currentColor"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8.2 7 10 4.1-1.8 7-5.4 7-10V6l-7-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-hard-drive" viewBox="0 0 24 24"><path d="M4 13h16M6.5 13 9 5h6l2.5 8M4 13v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="8" cy="16.5" r="1" fill="currentColor"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 3 20h18L12 4Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 9v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.3" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3.5 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l2.2-2.2a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-2.2 2.2a4.5 4.5 0 0 0 6.4 6.4l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5m0 0 6-6m-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-folder-plus" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5h3.1c.7 0 1.3.3 1.8.8l1.2 1.2h7A2.5 2.5 0 0 1 21 9.5v7A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 11v5m-2.5-2.5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <button class="icon-btn mobile-only" id="sidebarToggle" title="菜单" aria-label="打开菜单">
+        <svg><use href="#i-menu"/></svg>
+      </button>
+      <a class="brand" href="/" aria-label="OpenList 下载器">
+        <span class="brand-mark"><svg><use href="#i-logo"/></svg></span>
+        <span class="brand-text"><b>OpenList</b><em>下载器</em></span>
+      </a>
+
+      <button class="site-switch" id="siteSwitch" title="切换资源站">
+        <span class="site-dot" id="siteDot"></span>
+        <span class="site-switch-copy">
+          <span class="site-switch-label">当前资源站</span>
+          <span class="site-switch-name" id="currentSiteName">尚未选择</span>
+        </span>
+        <svg class="chev"><use href="#i-chevron"/></svg>
+      </button>
+
+      <div class="topbar-spacer"></div>
+
+      <button class="status-pill" id="aria2Badge" title="aria2 状态">
+        <span class="pulse-dot"></span>
+        <span id="aria2Label">检测 aria2</span>
+      </button>
+      <button class="icon-btn" id="helpBtn" title="使用说明" aria-label="使用说明"><svg><use href="#i-help"/></svg></button>
+      <button class="icon-btn" id="settingsBtn" title="设置" aria-label="设置"><svg><use href="#i-settings"/></svg></button>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar" id="sidebar">
+        <div class="side-section">
+          <div class="side-heading">
+            <span>资源站</span>
+            <button class="mini-btn" id="addSiteBtn" title="添加资源站"><svg><use href="#i-plus"/></svg></button>
+          </div>
+          <div class="site-list" id="siteList"></div>
+        </div>
+
+        <nav class="side-nav" aria-label="导航">
+          <button class="nav-item active" id="navFiles">
+            <svg><use href="#i-folder-open"/></svg><span>全部文件</span>
+          </button>
+          <button class="nav-item" id="navScan">
+            <svg><use href="#i-scan"/></svg><span>整站扫描</span><span class="nav-badge" id="scanNavBadge" hidden></span>
+          </button>
+          <button class="nav-item" id="navDirect">
+            <svg><use href="#i-link"/></svg><span>链接下载</span>
+          </button>
+          <button class="nav-item" id="navYunx">
+            <svg><use href="#i-cloud"/></svg><span>云析解析</span>
+          </button>
+          <button class="nav-item" id="navQueue">
+            <svg><use href="#i-download"/></svg><span>下载队列</span><span class="nav-badge" id="queueNavBadge" hidden>0</span>
+          </button>
+        </nav>
+
+        <div class="side-spacer"></div>
+        <div class="side-tip">
+          <svg><use href="#i-shield"/></svg>
+          <p>凭据只保存在本机内存，不会上传到任何第三方。</p>
+        </div>
+        <div class="side-footer">
+          <span class="version" id="appVersion">v1.0.0</span>
+          <button class="text-btn" id="openDownloadDir">打开下载目录</button>
+        </div>
+      </aside>
+      <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
+
+      <main class="main" id="main">
+        <section class="welcome" id="welcomeView" hidden>
+          <div class="welcome-glow"></div>
+          <div class="welcome-inner">
+            <div class="eyebrow"><span></span> 一个输入框，直接下载</div>
+            <h1>粘贴链接，<br><strong>直接下载。</strong></h1>
+            <p class="welcome-sub">OpenList 地址、百度/夸克分享链接、普通文件直链都可以。自动识别，默认保存到 Downloads。网盘分享链接第一次需要登录一次，之后直接解析。</p>
+
+            <div class="quick-connect" id="quickConnect">
+              <div class="address-input">
+                <svg><use href="#i-server"/></svg>
+                <input id="welcomeUrl" type="text" autocomplete="off" spellcheck="false" placeholder="粘贴 OpenList 地址、网盘分享链接或文件直链">
+                <button class="primary-btn" id="welcomeAddBtn">开始</button>
+              </div>
+              <div class="smart-hint">自动识别 OpenList、百度/夸克分享链接、文件直链。网盘第一次用会打开云析登录，之后直接解析。</div>
+              <div class="detected-row" id="detectedRow" hidden>
+                <span class="hint">发现本机 OpenList</span>
+                <div class="detected-list" id="detectedList"></div>
+              </div>
+            </div>
+
+            <div class="welcome-note">
+              <svg><use href="#i-alert"/></svg>
+              <span>请只下载你有权访问的内容。网盘速度与会员权益、资源站策略有关，本工具不绕过任何限制。</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="browser-view" id="browserView" hidden>
+          <div class="browser-head">
+            <div class="crumbs-wrap">
+              <button class="icon-btn up-btn" id="upBtn" title="返回上一级"><svg><use href="#i-arrow-left"/></svg></button>
+              <nav class="crumbs" id="breadcrumb" aria-label="路径"></nav>
+            </div>
+            <div class="browser-actions">
+              <label class="search-box">
+                <svg><use href="#i-search"/></svg>
+                <input id="filterInput" type="search" placeholder="筛选当前目录" autocomplete="off">
+                <button class="clear-search" id="clearFilter" hidden aria-label="清除筛选"><svg><use href="#i-x"/></svg></button>
+              </label>
+              <button class="icon-btn" id="refreshBtn" title="刷新当前目录"><svg><use href="#i-refresh"/></svg></button>
+              <button class="ghost-btn" id="selectAllBtn">全选</button>
+              <button class="ghost-btn" id="scanBtn"><svg><use href="#i-scan"/></svg>整站扫描</button>
+            </div>
+          </div>
+
+          <div class="selection-bar" id="selectionBar" hidden>
+            <div class="selection-info">
+              <span class="selection-badge" id="selectionCount">0</span>
+              <span>已选择 <b id="selectionSize">0 B</b></span>
+              <button class="text-btn" id="clearSelection">清空</button>
+            </div>
+            <div class="selection-actions">
+              <button class="ghost-btn" id="downloadSelectedZip">打包下载</button>
+              <button class="primary-btn" id="downloadSelected"><svg><use href="#i-download"/></svg>下载所选</button>
+            </div>
+          </div>
+
+          <div class="file-panel">
+            <div class="file-table-head">
+              <label class="check-wrap head-check"><input type="checkbox" id="selectPageCheckbox"><span></span></label>
+              <button class="col-name sortable" data-sort="name">名称 <span class="sort-ind"></span></button>
+              <button class="col-size sortable" data-sort="size">大小 <span class="sort-ind"></span></button>
+              <button class="col-date sortable" data-sort="modified">修改时间 <span class="sort-ind"></span></button>
+              <span class="col-action"></span>
+            </div>
+            <div class="file-list" id="fileList" role="list"></div>
+            <div class="empty-state" id="emptyState" hidden>
+              <div class="empty-icon"><svg><use href="#i-folder-open"/></svg></div>
+              <h3>这个文件夹是空的</h3>
+              <p>换一个目录看看，或者刷新重试。</p>
+            </div>
+            <div class="loading-state" id="loadingState">
+              <div class="loader"></div><span>正在读取目录…</span>
+            </div>
+          </div>
+
+          <div class="list-status">
+            <span id="itemSummary">0 个项目</span>
+            <span class="dot-sep"></span>
+            <span id="pathSummary">/</span>
+            <span class="spacer"></span>
+            <span class="provider-label" id="providerLabel"></span>
+          </div>
+        </section>
+
+        <section class="session-view" id="sessionView" hidden>
+          <div class="session-card">
+            <div class="session-icon"><svg><use href="#i-server"/></svg></div>
+            <h2 id="sessionTitle">连接资源站</h2>
+            <p id="sessionText">这个资源站需要登录后才能浏览文件。</p>
+            <div class="session-actions">
+              <button class="primary-btn" id="sessionLoginBtn">登录资源站</button>
+              <button class="ghost-btn" id="sessionSwitchBtn">换一个资源站</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+  <!-- Site picker -->
+  <div class="modal-layer" id="siteModal" hidden>
+    <div class="modal-backdrop" data-close="siteModal"></div>
+    <div class="modal card-modal" role="dialog" aria-modal="true" aria-labelledby="siteModalTitle">
+      <div class="modal-head">
+        <div><span class="kicker">SITES</span><h2 id="siteModalTitle">选择资源站</h2></div>
+        <button class="icon-btn" data-close="siteModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="site-cards" id="siteCards"></div>
+        <div class="divider"><span>或添加新的资源站</span></div>
+        <form class="stack-form" id="addSiteForm">
+          <label class="field">
+            <span>资源站地址</span>
+            <input id="newSiteUrl" type="text" placeholder="http://127.0.0.1:5244 或 https://pan.example.com" autocomplete="off">
+          </label>
+          <div class="form-row">
+            <label class="field grow"><span>显示名称 <small>可选</small></span><input id="newSiteName" type="text" placeholder="自动读取站点名称" autocomplete="off"></label>
+            <button class="primary-btn self-end" type="submit">添加并连接</button>
+          </div>
+          <p class="form-hint">这里填 <b>OpenList / AList</b> 地址，不是 pan.baidu.com 等网盘网页。百度网盘等需要在 OpenList 后台挂载账号；没挂载请用“链接下载”。</p>
+        </form>
+        <div class="detected-block" id="modalDetected" hidden>
+          <span class="hint">本机检测到</span>
+          <div class="detected-list" id="modalDetectedList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div class="modal-layer" id="loginModal" hidden>
+    <div class="modal-backdrop" data-close="loginModal"></div>
+    <div class="modal login-modal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <div class="modal-head">
+        <div><span class="kicker">AUTH</span><h2 id="loginTitle">登录资源站</h2></div>
+        <button class="icon-btn" data-close="loginModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="login-site"><span class="site-dot"></span><b id="loginSiteName"></b><span id="loginSiteUrl"></span></div>
+        <p class="form-hint login-hint">这里登录的是 <b>OpenList</b> 账号，不是百度/夸克等网盘账号。网盘需先在 OpenList 后台挂载。</p>
+        <div class="tab-bar" role="tablist">
+          <button class="tab active" data-login-tab="password" role="tab">账号密码</button>
+          <button class="tab" data-login-tab="token" role="tab">访问令牌</button>
+        </div>
+        <form id="loginForm" class="stack-form">
+          <div id="passwordFields">
+            <label class="field"><span>用户名</span><input id="loginUsername" autocomplete="username" placeholder="OpenList 用户名"></label>
+            <label class="field"><span>密码</span><input id="loginPassword" type="password" autocomplete="current-password" placeholder="OpenList 密码"></label>
+            <label class="field" id="otpField"><span>二步验证码 <small>若开启</small></span><input id="loginOtp" inputmode="numeric" autocomplete="one-time-code" placeholder="6 位动态码"></label>
+          </div>
+          <div id="tokenFields" hidden>
+            <label class="field"><span>访问令牌</span><input id="loginToken" autocomplete="off" placeholder="粘贴 OpenList 的 token"></label>
+            <p class="form-hint">令牌可在 OpenList 管理后台的“个人资料 / 令牌”中生成。</p>
+          </div>
+          <div class="form-error" id="loginError" hidden></div>
+          <div class="login-actions">
+            <button class="ghost-btn" type="button" id="guestLoginBtn">游客访问</button>
+            <button class="primary-btn" type="submit" id="loginSubmit">登录并进入</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Download sheet -->
+  <div class="modal-layer" id="downloadModal" hidden>
+    <div class="modal-backdrop" data-close="downloadModal"></div>
+    <div class="modal download-modal" role="dialog" aria-modal="true" aria-labelledby="downloadTitle">
+      <div class="modal-head">
+        <div><span class="kicker">DOWNLOAD</span><h2 id="downloadTitle">下载所选</h2></div>
+        <button class="icon-btn" data-close="downloadModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="download-summary" id="downloadSummary"></div>
+        <div class="engine-grid">
+          <button class="engine-card selected" data-engine="browser">
+            <span class="engine-icon"><svg><use href="#i-cloud"/></svg></span>
+            <span class="engine-copy"><b>浏览器下载</b><em>开箱即用，多文件自动打包 ZIP</em></span>
+            <span class="engine-check"><svg><use href="#i-check"/></svg></span>
+          </button>
+          <button class="engine-card" data-engine="aria2" id="aria2Engine">
+            <span class="engine-icon aria"><svg><use href="#i-zap"/></svg></span>
+            <span class="engine-copy"><b>aria2 多线程 <span class="tag" id="aria2EngineTag">内置</span></b><em id="aria2EngineHint">自动启动，多连接加速</em></span>
+            <span class="engine-check"><svg><use href="#i-check"/></svg></span>
+          </button>
+        </div>
+        <div class="aria2-options" id="aria2Options" hidden>
+          <label class="field"><span>保存到</span><div class="dir-input"><input id="downloadDir" type="text" spellcheck="false"><button class="mini-btn" id="pickDirHint" title="打开文件夹"><svg><use href="#i-folder-open"/></svg></button></div></label>
+          <div class="option-row">
+            <span>多线程连接</span>
+            <div class="stepper"><button type="button" data-split="-1">−</button><b id="splitValue">8</b><button type="button" data-split="1">＋</button></div>
+          </div>
+          <p class="form-hint">任务会交给 aria2 后台下载，可关闭这个页面。文件和文件夹结构会保留。</p>
+        </div>
+        <div class="browser-options" id="browserOptions">
+          <div class="option-row"><span>文件夹结构</span><span class="option-value">保留</span></div>
+          <div class="option-row"><span>多文件</span><span class="option-value">自动打包为 ZIP</span></div>
+        </div>
+        <div class="form-error" id="downloadError" hidden></div>
+        <div class="progress-strip" id="downloadProgress" hidden><div class="progress-bar"><i></i></div><span></span></div>
+        <div class="modal-actions">
+          <button class="ghost-btn" data-close="downloadModal">取消</button>
+          <button class="primary-btn" id="startDownloadBtn"><svg><use href="#i-download"/></svg>开始下载</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scan -->
+  <div class="modal-layer" id="scanModal" hidden>
+    <div class="modal-backdrop" data-close="scanModal"></div>
+    <div class="modal scan-modal" role="dialog" aria-modal="true" aria-labelledby="scanTitle">
+      <div class="modal-head">
+        <div><span class="kicker">WHOLE SITE</span><h2 id="scanTitle">整站扫描</h2></div>
+        <button class="icon-btn" data-close="scanModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="scan-visual" id="scanVisual">
+          <div class="scan-radar"><span></span><span></span><span></span><div class="radar-core"><svg><use href="#i-scan"/></svg></div></div>
+          <h3 id="scanStateTitle">正在遍历资源站</h3>
+          <p id="scanStateText">首次扫描会读取每个文件夹，站点越大耗时越长。</p>
+        </div>
+        <div class="scan-stats">
+          <div><b id="scanFiles">0</b><span>文件</span></div>
+          <div><b id="scanSize">0 B</b><span>总大小</span></div>
+          <div><b id="scanDirs">0</b><span>已读目录</span></div>
+        </div>
+        <div class="scan-current"><svg><use href="#i-folder"/></svg><span id="scanCurrent">准备中…</span></div>
+        <div class="form-error" id="scanError" hidden></div>
+        <div class="modal-actions">
+          <button class="ghost-btn" id="scanCancelBtn">停止扫描</button>
+          <button class="primary-btn" id="scanDownloadBtn" disabled><svg><use href="#i-download"/></svg>下载全部</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YunX bridge -->
+  <div class="modal-layer" id="yunxModal" hidden>
+    <div class="modal-backdrop" data-close="yunxModal"></div>
+    <div class="modal direct-modal" role="dialog" aria-modal="true" aria-labelledby="yunxTitle">
+      <div class="modal-head">
+        <div><span class="kicker">YUNX · SEPARATE APP</span><h2 id="yunxTitle">云析解析</h2></div>
+        <button class="icon-btn" data-close="yunxModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="yunx-status" id="yunxStatus">正在检测云析…</div>
+        <label class="field">
+          <span>网盘分享链接 <small>百度 / 夸克 / UC / 迅雷 / 115 等</small></span>
+          <textarea id="yunxUrl" class="code-input" rows="3" spellcheck="false" placeholder="粘贴分享链接，可带提取码&#10;例如：https://pan.quark.cn/s/xxxx 提取码：abcd"></textarea>
+        </label>
+        <div class="browser-options direct-note">
+          <p><b>云析是独立的开源程序（AGPL-3.0），不属于本工具。</b>本工具只负责把链接复制到剪贴板并启动云析；解析、登录网盘、下载都在云析里完成。</p>
+          <p>首次使用需要先在云析里登录百度/夸克等账号。百度有账号风控风险，速度也受平台限制，不保证“不限速”。</p>
+        </div>
+        <div class="form-error" id="yunxError" hidden></div>
+        <div class="modal-actions yunx-actions">
+          <button class="ghost-btn" id="getYunxBtn" type="button"><svg><use href="#i-external"/></svg>获取云析</button>
+          <span class="spacer"></span>
+          <button class="ghost-btn" id="openYunxOnlyBtn" type="button">只打开云析</button>
+          <button class="primary-btn" id="startYunxBtn"><svg><use href="#i-external"/></svg>复制链接并打开云析</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Direct links -->
+  <div class="modal-layer" id="directModal" hidden>
+    <div class="modal-backdrop" data-close="directModal"></div>
+    <div class="modal direct-modal" role="dialog" aria-modal="true" aria-labelledby="directTitle">
+      <div class="modal-head">
+        <div><span class="kicker">DIRECT URL</span><h2 id="directTitle">链接下载（不需要挂载网盘）</h2></div>
+        <button class="icon-btn" data-close="directModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span>下载直链 <small>每行一个；可写「文件名 | 链接」</small></span>
+          <textarea id="directUrls" class="code-input" rows="6" spellcheck="false" placeholder="https://example.com/file.zip&#10;电影.mkv | https://example.com/download?id=123"></textarea>
+        </label>
+        <label class="field">
+          <span>请求头 <small>可选，每行一个 Name: value</small></span>
+          <textarea id="directHeaders" class="code-input" rows="3" spellcheck="false" placeholder="Cookie: BDUSS=...&#10;Referer: https://pan.baidu.com/&#10;User-Agent: pan.baidu.com"></textarea>
+        </label>
+        <div class="form-row">
+          <label class="field"><span>下载方式</span><select id="directEngine"><option value="aria2">aria2 多线程（推荐）</option><option value="browser">浏览器下载（单链接）</option></select></label>
+          <label class="field grow"><span>保存到（aria2）</span><input id="directDir" type="text" spellcheck="false"></label>
+        </div>
+        <div class="browser-options direct-note">
+          <p><b>没挂载网盘也能用：</b>把文件直链或带签名的下载地址粘进来即可。百度网盘分享页本身不是直链，需要先从浏览器/网盘客户端取得直链；需要登录态的链接，把 Cookie 一并填入。</p>
+          <p>直链下载不经过 OpenList，速度取决于文件源；aria2 会使用多连接。请只下载你有权访问的内容。</p>
+        </div>
+        <div class="form-error" id="directError" hidden></div>
+        <div class="progress-strip" id="directProgress" hidden><div class="progress-bar"><i></i></div><span></span></div>
+        <div class="modal-actions">
+          <button class="ghost-btn" data-close="directModal">取消</button>
+          <button class="primary-btn" id="startDirectBtn"><svg><use href="#i-download"/></svg>开始下载</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Queue -->
+  <div class="drawer-layer" id="queueLayer" hidden>
+    <div class="drawer-backdrop" data-close="queueLayer"></div>
+    <aside class="queue-drawer" role="dialog" aria-modal="true" aria-labelledby="queueTitle">
+      <div class="drawer-head">
+        <div><span class="kicker">TRANSFERS</span><h2 id="queueTitle">下载队列</h2></div>
+        <button class="icon-btn" data-close="queueLayer" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="queue-overview">
+        <div class="queue-speed"><span id="queueSpeed">0 B/s</span><small>当前速度</small></div>
+        <div class="queue-counts"><span><b id="queueActive">0</b> 活跃</span><span><b id="queueWaiting">0</b> 等待</span><span><b id="queueDone">0</b> 完成</span><span><b id="queueFailed">0</b> 失败</span></div>
+      </div>
+      <div class="queue-list" id="queueList"></div>
+      <div class="queue-empty" id="queueEmpty">
+        <div class="empty-icon"><svg><use href="#i-download"/></svg></div>
+        <h3>还没有 aria2 任务</h3>
+        <p>选择文件后使用 aria2 下载，任务会出现在这里。</p>
+        <button class="ghost-btn" id="queueEnsureBtn">启动 / 检测 aria2</button>
+      </div>
+      <div class="queue-foot">
+        <button class="text-btn danger" id="clearAllQueueBtn">一键清空列表</button>
+        <button class="text-btn" id="clearQueueBtn">清空已完成</button>
+        <button class="text-btn" id="queueOpenDir">打开下载目录</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Settings -->
+  <div class="modal-layer" id="settingsModal" hidden>
+    <div class="modal-backdrop" data-close="settingsModal"></div>
+    <div class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+      <div class="modal-head">
+        <div><span class="kicker">PREFERENCES</span><h2 id="settingsTitle">设置</h2></div>
+        <button class="icon-btn" data-close="settingsModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body settings-body">
+        <section class="settings-section">
+          <h3>下载</h3>
+          <label class="field"><span>默认保存目录</span><div class="dir-input"><input id="settingsDir" type="text" spellcheck="false"><button class="mini-btn" id="settingsOpenDir" title="打开目录"><svg><use href="#i-folder-open"/></svg></button></div></label>
+          <div class="form-row">
+            <label class="field"><span>默认引擎</span><select id="settingsEngine"><option value="browser">浏览器下载</option><option value="aria2">aria2 多线程</option></select></label>
+            <label class="field"><span>每任务连接数</span><input id="settingsSplit" type="number" min="1" max="32" value="16"></label>
+            <label class="field"><span>同时下载</span><input id="settingsConcurrency" type="number" min="1" max="16" value="8"></label>
+          </div>
+          <div class="form-row">
+            <label class="field grow"><span>下载通道</span><select id="settingsDirect"><option value="direct">极速直连（推荐，跑满带宽）</option><option value="proxy">兼容代理（部分网盘更稳）</option></select></label>
+            <button class="ghost-btn self-end" id="turboPresetBtn" type="button"><svg><use href="#i-zap"/></svg>一键提速</button>
+          </div>
+          <p class="form-hint" id="directHint">直连模式让 aria2 直接连接文件源，少一层本机中转，通常速度更快。若任务报 403/连接错误，可切换为兼容代理。</p>
+        </section>
+
+        <section class="settings-section">
+          <div class="settings-title-row"><h3>aria2</h3><span class="status-text" id="settingsAria2Status">检测中…</span></div>
+          <p class="form-hint" id="settingsAria2Hint">内置 aria2 会自动启动，通常不需要修改这里。</p>
+          <label class="field"><span>RPC 地址</span><input id="settingsEndpoint" type="text" placeholder="http://127.0.0.1:16800/jsonrpc" spellcheck="false"></label>
+          <label class="field"><span>RPC 密钥 <small>没有就留空</small></span><input id="settingsSecret" type="password" autocomplete="off" placeholder="rpc-secret"></label>
+          <div class="settings-actions">
+            <button class="ghost-btn" id="testAria2Btn">测试 / 连接</button>
+            <button class="ghost-btn" id="startAria2Btn">启动内置 aria2</button>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <h3>外观</h3>
+          <div class="theme-row">
+            <button class="theme-swatch dark active" data-theme-choice="dark"><span></span>深色</button>
+            <button class="theme-swatch light" data-theme-choice="light"><span></span>浅色</button>
+          </div>
+        </section>
+
+        <div class="form-error" id="settingsError" hidden></div>
+        <div class="modal-actions">
+          <button class="ghost-btn" data-close="settingsModal">取消</button>
+          <button class="primary-btn" id="saveSettingsBtn">保存设置</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help -->
+  <div class="modal-layer" id="helpModal" hidden>
+    <div class="modal-backdrop" data-close="helpModal"></div>
+    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <div class="modal-head">
+        <div><span class="kicker">GUIDE</span><h2 id="helpTitle">三分钟上手</h2></div>
+        <button class="icon-btn" data-close="helpModal" aria-label="关闭"><svg><use href="#i-x"/></svg></button>
+      </div>
+      <div class="modal-body help-body">
+        <div class="help-step"><b>01</b><div><h3>添加资源站</h3><p>填入 OpenList / AList 的访问地址。公开站点可以直接游客访问；私有站点输入用户名密码或访问令牌。凭据只保存在本机内存。</p></div></div>
+        <div class="help-step"><b>02</b><div><h3>选择文件或文件夹</h3><p>点文件夹进入下一级，勾选任意文件或整个文件夹。选择会跨目录保留，最后统一下载。</p></div></div>
+        <div class="help-step"><b>03</b><div><h3>百度网盘和其他网盘</h3><p>本工具不直接登录网盘。挂载到 OpenList 后可以像本地目录一样浏览；如果没挂载，也可以用侧栏“链接下载”直接粘贴文件直链（需要登录态的链接把 Cookie 一并填入）。</p></div></div>
+        <div class="help-step"><b>04</b><div><h3>选择下载方式</h3><p><strong>浏览器下载</strong>不需要任何配置，多文件自动打成 ZIP 并保留目录结构。<strong>aria2</strong> 适合大批量文件，内置版本自动启动，支持多线程与断点续传。</p></div></div>
+        <div class="help-step"><b>05</b><div><h3>整站下载</h3><p>点“整站扫描”，程序会遍历全站目录，统计文件数量与体积，然后一次下载全部。大站点请耐心等待扫描完成。</p></div></div>
+        <div class="help-note"><svg><use href="#i-shield"/></svg><p>所有请求都经由本机 <code>127.0.0.1</code> 转发，不经过第三方服务器。下载能力取决于你的 OpenList 配置与网盘账号权限。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
